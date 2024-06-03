@@ -1,0 +1,702 @@
+/* ヘッダー ================================ */
+/* reset ================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font: 100%/1.5 'Avenir Next', 'Hiragino Sans', sans-serif;
+  line-height: 1.7;
+  letter-spacing: 1px;
+}
+
+ul, li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #2d3133;
+  font-size: 14px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+input {
+  background-color: transparent;
+  outline-width: 0;
+}
+
+form input[type="submit"] {
+  border: none;
+  cursor: pointer;
+}
+
+/* カルーセル全体 */
+.carousel {
+  /* 水平方向中央寄せ */
+  display: flex;
+  justify-content: center;
+}
+/* カルーセル内容 */
+.contains {
+  inline-size: 80vw;
+  block-size: 60vh;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+  list-style: none;
+}
+/* スライド切り換え用ラジオボタンは常に非表示 */
+.slide_select {
+  display: none;
+}
+/* 各スライド */
+.slide {
+  inline-size: 100%;
+  block-size: 100%;
+  position: absolute;
+  /* スライドの初期値は選択されていないので透明にしておく */
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide img {
+  inline-size: 70%;
+  max-inline-size: 70vw;
+  block-size: auto;
+  max-block-size: 60vh;
+  object-fit: contain; /* 画像をカルーセルの大きさにフィットさせる */
+}
+
+/* 前へ次へボタン */
+.scroll_button {
+  position: absolute;
+  display: block;
+  block-size: 5vh;
+  inline-size: 5vh;
+  /* 縦中央から20px上の位置 */
+  inset-block-start: 50%;
+  margin-block-start: -2.5vh;
+  /* 上辺と右辺のみ幅5pxの枠線 */
+  border-width: 5px 5px 0 0;
+  border-style: solid;
+  border-color: #000000;
+  cursor: pointer;
+  /* 普段はボタンはやや薄くする */
+  opacity: 0.5;
+  /* スライドよりも前面にする */
+  z-index: 3;
+}
+/* ホバー時にボタンを強調 */
+.scroll_button:hover {
+  opacity: 1;
+}
+/* 前へボタン */
+.scroll_prev {
+  inset-inline-start: 13%;
+  /* 上辺と右辺の枠線を回転して"＜"にする */
+  transform: rotate(-135deg);
+}
+/* 次へボタン */
+.scroll_next {
+  inset-inline-end: 13%;
+  /* 上辺と右辺の枠線を回転して"＞"にする */
+  transform: rotate(45deg);
+}
+/* スライド移動ボタンエリア */
+.move_controler {
+  position: absolute;
+  inset-block-end: 5%;
+  inline-size: 100%;
+  text-align: center;
+}
+/* スライド移動の各ボタン */
+.button_move {
+  display: inline-block;
+  block-size: 2vh;
+  inline-size: 2vh;
+  margin: 0 2px;
+  border-radius: 100%;
+  cursor: pointer;
+  /* 普段はやや薄くする */
+  opacity: 0.5;
+  /* スライドより前面にする */
+  z-index: 2;
+}
+/* ホバー時はやや明るくする */
+.button_move:hover {
+  opacity: 0.75;
+}
+/* スライド移動ボタンの色 */
+.button_move {
+  background-color: #000000;
+}
+/* 1番目のスライド選択時 */
+/* 1番目のスライドの透明度を0にして表示する */
+.slide_select:nth-of-type(1):checked ~ .slide:nth-of-type(1) {
+  opacity: 1;
+}
+/* スライド移動ボタンの1個目を明るくする */
+/* （今選択されていることが分かるように） */
+.slide_select:nth-of-type(1):checked ~ .move_controler .button_move:nth-of-type(1) {
+  opacity: 1;
+}
+.slide_select:nth-of-type(2):checked ~ .slide:nth-of-type(2) {
+  opacity: 1;
+}
+/* 2番目のスライド選択時（1番目のスライドと同じことをする） */
+.slide_select:nth-of-type(2):checked ~ .move_controler .button_move:nth-of-type(2) {
+  opacity: 1;
+}
+/* 3番目のスライド選択時 */
+.slide_select:nth-of-type(3):checked ~ .slide:nth-of-type(3) {
+  opacity: 1;
+}
+.slide_select:nth-of-type(3):checked ~ .move_controler
+  .button_move:nth-of-type(3) {
+  opacity: 1;
+}
+/* 4番目のスライド選択時 */
+.slide_select:nth-of-type(4):checked ~ .slide:nth-of-type(4) {
+  opacity: 1;
+}
+.slide_select:nth-of-type(4):checked
+  ~ .move_controler
+  .button_move:nth-of-type(4) {
+  opacity: 1;
+}
+
+/*--------------------------------------
+  カード型_02
+--------------------------------------*/
+/* カード全体を中央寄せし、幅を300pxに設定 */
+.l-wrapper_02 {
+  margin: 1rem; /* カード間のスペースを確保するために1remのマージンを追加 */
+  inline-size: 300px; /* カードの幅を300pxに設定 */
+}
+
+/* カードの角を丸くし、シャドウを追加して立体感を演出 */
+.card-radius_02 {
+  overflow: hidden; /* コンテンツがカードの境界を超えないようにする */
+  border-radius: 8px; /* 角を8pxの半径で丸くする */
+  box-shadow: 0 4px 15px rgba(0,0,0,.2); /* カードに影を追加して立体感を出す */
+}
+
+/* カードの基本スタイルを設定 */
+.card_02 {
+  background-color: #fff; /* 背景色を白に設定 */
+  box-shadow: 0 0 0px rgba(0, 0, 0, .16); /* カードに軽微な影を追加 */
+  color: #212121; /* テキストの色を濃いグレーに設定 */
+  text-decoration: none; /* テキストの装飾をなくす */
+}
+
+/* カードのヘッダー部分のスタイルを設定 */
+.card__header_02 {
+  display: flex; /* フレックスボックスを使用してレイアウト */
+  flex-wrap: wrap; /* コンテンツが折り返すようにする */
+}
+
+/* カードのタイトルのスタイルを設定 */
+.card__title_02 {
+  padding: 0 1.5rem 0; /* 上に1rem、左右に1.5remのパディングを追加 */
+  font-size: 1.5rem; /* フォントサイズを1.2remに設定 */
+  font-weight: bold; /* フォントを太字に設定 */
+  border-block-end: solid 3px black; /* 下線として3pxの黒い実線を追加 */ 
+}
+
+/* サムネイル画像のスタイルを設定 */
+.card__thumbnail_02 {
+  margin: 0; /* マージンを0に設定 */
+  order: 0; /* フレックスアイテムの順序を0に設定 */
+}
+
+/* 画像のサイズを設定 */
+.card__image_02 {
+  inline-size: 100%; /* 画像の幅を親要素に合わせて100%に設定 */
+  block-size: auto;
+}
+
+/* カードの本文部分のスタイルを設定 */
+.card__body_02 {
+  padding: 0 1.5rem; /* 左右に1.5remのパディングを追加 */
+}
+
+/* カード内のテキストのスタイルを設定 */
+.card__text_02 {
+  font-size: .5rem; 
+  text-align: center; /* テキストを中央揃えに設定 */
+  text-decoration: none; /* テキストの装飾をなくす */
+}
+
+
+/* カードを横に並べるためのコンテナ */
+.card-container {
+  display: flex; /* フレックスボックスを使用してレイアウト */
+  flex-wrap: wrap; /* カードが折り返すようにする */
+  justify-content: center; /* カードを中央揃えにする */
+}
+
+.user_name {
+  font-size: 20px; /* フォントサイズを小さく設定 */
+  color: #333;
+  margin: 1rem 0;
+  text-align: center;
+  inline-size: 100%; /* 幅を100%に設定して中央揃えを適用 */
+}
+
+/* 共通レイアウト ================================ */
+body {
+  color: #2d3133;
+  background-color: #ffffff;
+  margin: 0;
+  min-block-size: 1vh;
+}
+
+.main {
+  position: absolute;
+  inset-block-start: 64px;
+  inline-size: 100%;
+  block-size: auto;
+  min-block-size: 100%;
+  background-color: #f5f8fa;
+}
+
+.container {
+  max-inline-size: 600px;
+  margin: 60px auto;
+  padding-inline-start: 15px;
+  padding-inline-end: 15px;
+  clear: both;
+}
+
+/* ヘッダー ================================ */
+
+/* ヘッダーのスタイルを定義 */
+header {
+  background-color: rgb(206, 244, 215);
+  block-size: 64px;  /* ヘッダーの高さを64pxに設定 */
+  position: absolute;  /* ヘッダーの位置を絶対位置に設定 */
+  z-index: 1;  /* ヘッダーの重なり順序を設定 */
+  inline-size: 100%;  /* ヘッダーの幅を100%に設定 */
+}
+
+/* ヘッダーロゴのスタイルを定義 */
+.header-logo {
+  float: inline-start;  /* ロゴを左側に配置 */
+  padding-inline-start: 20px;  /* ロゴの左側に20pxの余白を追加 */
+  display: flex;  /* フレックスボックスを使用して内部の配置を管理 */
+  align-items: center;  /* 子要素を垂直方向に中央に配置 */
+}
+
+/* ヘッダーロゴ内のリンクのスタイルを定義 */
+.header-logo a {
+  color: rgb(0, 0, 0);  /* リンクの文字色を白に設定 */
+  font-size: 22px;  /* リンクのフォントサイズを22pxに設定 */
+}
+
+/* ヘッダーメニューのスタイルを定義 */
+.header-menus {
+  float: inline-start;  /* メニューを左側に配置 */
+  padding-inline-end: 20px;  /* メニューの右側に20pxの余白を追加 */
+}
+
+/* ヘッダーメニューのリストアイテムのスタイルを定義 */
+.header-menus li {
+  float: inline-start;  /* リストアイテムを左側に配置 */
+  line-height: 64px;  /* リストアイテムの行の高さを64pxに設定 */
+  font-size: 20px;  /* リストアイテムのフォントサイズを13pxに設定 */
+  color: rgb(0, 0, 0);  /* リストアイテムの文字色を白に設定 */
+  padding-inline-start: 15px;  /* リストアイテムの左側に15pxの余白を追加 */
+}
+
+/* ヘッダーメニュー内のリンクのスタイルを定義 */
+.header-menus a {
+  float: inline-start;  /* リンクを左側に配置 */
+  font-size: 20px;  /* リンクのフォントサイズを13pxに設定 */
+  color: rgb(0, 0, 0);  /* リンクの文字色を白に設定 */
+}
+
+/* ヘッダーメニュー内のフォントアイコンのスタイルを定義 */
+.header-menus .fa {
+  padding-inline-end: 5px;  /* アイコンの右側に5pxの余白を追加 */
+}
+
+/* ヘッダーメニュー内の送信ボタンのスタイルを定義 */
+.header-menus input[type="submit"] {
+  padding: 0 20px;  /* ボタンの左右に20pxの余白を追加 */
+  float: inline-start;  /* ボタンを左側に配置 */
+  line-height: 64px;  /* ボタンの行の高さを64pxに設定 */
+  color: rgb(0, 0, 0);  /* ボタンの文字色を白に設定 */
+  margin: 0;  /* ボタンの外側の余白を0に設定 */
+  font-size: 20px;  /* ボタンのフォントサイズを13pxに設定 */
+}
+
+.logo-image {
+  inline-size: 100%;   /* 画像の幅を親要素の50%に設定 */
+  block-size: auto; /* 画像の高さを自動調整 */
+  max-block-size: 100%;  /* 画像の高さが親要素を超えないように設定 */
+}
+
+/* top ================================ */
+.top-main {
+  padding: 200px 0 100px;
+  text-align: center;
+  position: absolute;
+  inset-block-start: 0;
+  inline-size: 100%;
+  block-size: auto;
+  min-block-size: 100%;
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: center 50%;
+  background-size: cover;
+}
+
+.top-message {
+  position: relative;
+}
+
+.top-main h2 {
+  font-family: serif;
+  font-size: 70px;
+  font-weight: 500;
+  line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
+  margin-block-end: 20px;
+}
+
+.top-main p {
+  font-size: 24px;
+}
+
+/* about ================================ */
+.about-main {
+  padding: 180px 8% 0;
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+.about-main h2 {
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-family: serif;
+}
+
+.about-main p {
+  font-size: 20px;
+  font-family: serif;
+}
+
+.about-img {
+  inline-size: 50%;
+  display: block;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+/* フォーム================================ */
+.form {
+  max-inline-size: 600px;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 2px 6px #c1ced7;
+}
+
+.form-heading {
+  font-weight: 300;
+  margin: 60px 0 20px;
+  font-size: 48px;
+  color: #bcc8d4;
+}
+
+.form-body {
+  padding: 30px;
+}
+
+.form-error {
+  color: #ff4d75;
+}
+
+.form input {
+  inline-size: 100%;
+  border: 1px solid #d8dadf;
+  padding: 10px;
+  color: #57575f;
+  font-size: 16px;
+  letter-spacing: 2px;
+  border-radius: 2px;
+}
+
+.form textarea {
+  inline-size: 100%;
+  min-block-size: 110px;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.form input[type="submit"] {
+  background-color: #3ecdc6;
+  color: white;
+  cursor: pointer;
+  font-weight: 300;
+  inline-size: 120px;
+  border-radius: 2px;
+  margin-block-start: 8px;
+  margin-block-end: 0;
+  float: inline-start;
+}
+
+.form-body:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* フラッシュ ================================ */
+.flash {
+  padding: 10px 0;
+  color: white;
+  background: rgb(251, 170, 88);
+  text-align: center;
+  position: absolute;
+  inset-block-start: 64px;
+  z-index: 10;
+  inline-size: 100%;
+  border-radius: 0 0 2px 2px;
+  font-size: 14px;
+}
+
+
+
+/* posts/index ================================ */
+.posts-index-item {
+  padding: 20px 30px;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: 0 2px 6px #c1ced7;
+}
+
+.post-left img {
+  inline-size: 50px;
+  block-size: 50px;
+  border-radius: 40%;
+  box-shadow: 0 2px 6px #c1ced7;
+  object-fit: cover;
+}
+
+.post-user-name a {
+  font-weight: 600;
+}
+
+.post-user-name a:hover {
+  color: #3ecdc6;
+}
+
+.post-left {
+  float: inline-start;
+  inline-size: 10%;
+}
+
+.post-right {
+  float: inline-start;
+  inline-size: 90%;
+  padding-inline-start: 25px;
+  text-align: start;
+}
+
+
+/* posts/show ================================ */
+.posts-show form {
+  display: inline;
+}
+
+.posts-show-item {
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 2px 6px #c1ced7;
+  overflow: hidden;
+}
+
+.posts-show-item img {
+  inline-size: 60px;
+  block-size: 60px;
+  border-radius: 40%;
+  box-shadow: 0 2px 6px #c1ced7;
+  vertical-align: middle;
+  object-fit: cover;
+}
+
+.posts-show-item .post-user-name a {
+  vertical-align: middle;
+  font-size: 24px;
+  margin-inline-start: 15px;
+}
+
+.posts-show-item p {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.post-time {
+  color: #8899a6;
+  margin-block-end: 10px;
+}
+
+.post-menus {
+  float: inline-start;
+}
+
+.post-menus a, .post-menus input {
+  color: #8899a6;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+/* posts/new ================================ */
+.posts-new textarea {
+  font-size: 20px;
+  padding: 10px;
+  min-block-size: 140px;
+  border: 1px solid rgb(216, 218, 223);
+  resize: none;
+}
+
+.posts-new textarea::-webkit-input-placeholder {
+  font-size: 24px;
+  opacity: 0.5;
+}
+
+.alert {
+  color:#262626; 
+  background:#FFEBE8;
+  text-align: center;
+  border:2px solid #990000;
+  padding:12px; font-weight:850;
+}
+
+
+/* users/index ================================ */
+.users-heading {
+  font-weight: 300;
+  margin: 60px 0 20px;
+  font-size: 48px;
+  color: #bcc8d4;
+}
+
+.users-index-item {
+  padding: 20px 30px;
+  background-color: white;
+  overflow: hidden;
+  box-shadow: 0 2px 6px #c1ced7;
+  display: table;
+  inline-size: 100%;
+}
+
+.user-left img {
+  inline-size: 50px;
+  block-size: 50px;
+  border-radius: 40%;
+  box-shadow: 0 2px 6px #c1ced7;
+  object-fit: cover;
+}
+
+.user-name a {
+  font-weight: 600;
+}
+
+.user-name a:hover {
+  color: #3ecdc6;
+}
+
+.user-left {
+  float: inline-start;
+  inline-size: 10%;
+}
+
+.user-right {
+  inline-size: 90%;
+  padding-inline-start: 25px;
+  text-align: start;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* users/show ================================ */
+.user-show {
+  text-align: center;
+}
+
+.user {
+  margin-block-end: 20px;
+}
+
+.user img {
+  inline-size: 80px;
+  block-size: 80px;
+  border-radius: 40%;
+  box-shadow: 0 2px 6px #c1ced7;
+  margin: 20px 0 10px;
+  object-fit: cover;
+}
+
+.user h2 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.user p {
+  font-size: 13px;
+  margin-block-end: 15px;
+}
+
+.user a {
+  color: #8899a6;
+  text-decoration: underline;
+  font-weight: 200;
+}
+
+.user span {
+  color: #afb6bf;
+  font-weight: 200;
+  padding: 0 6px 0 8px;
+}
+
+.user-tabs {
+  margin-block-start: 40px;
+    background-color: white;
+  overflow: hidden;
+  box-shadow: 0 2px 6px #c1ced7;
+}
+
+.user-tabs li {
+  float: inline-start;
+}
+
+.user-tabs li.active {
+  border-block-end: 2px solid #3ecdc6;
+}
+
+.user-tabs li.active a {
+  color: #57575f;
+}
+
+.user-tabs a {
+  display: inline-block;
+  padding: 16px 30px;
+  color: #afb6bf;
+}
+
+/* users/new, users/edit ================================ */
+.users-form input {
+  margin-block-end: 15px;
+}

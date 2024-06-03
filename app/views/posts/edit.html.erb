@@ -1,0 +1,37 @@
+<div class="main posts-new">
+  <div class="container">
+    <h1 class="form-heading">編集する</h1>
+
+    <%= form_tag("/posts/#{@post.id}/update", {multipart: true}) do %>
+      <div class="form">
+        <div class="form-body">
+          <% @post.errors.full_messages.each do |message| %>
+            <div class="form-error">
+              <%= message %>
+            </div>
+          <% end %>
+          <!-- 画像の変更欄 -->
+          <div class="form-group">
+            <%= label_tag 'image', '画像:' %>
+            <%= file_field_tag 'image' %>
+          </div>
+
+          <!-- アーティスト名の変更欄 -->
+          <div class="form-group">
+            <%= label_tag 'artist_title', 'アーティスト名:' %>
+            <%= text_field_tag 'artist_title', @post.artist_title %>
+          </div>
+
+          <!-- 内容の変更欄 -->
+          <div class="form-group">
+            <%= label_tag 'content', '内容:' %>
+            <%= text_area_tag 'content', @post.content %>
+          </div>
+          
+          <!-- 保存ボタン -->
+          <input type="submit" value="保存">
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

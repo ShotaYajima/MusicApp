@@ -1,0 +1,82 @@
+
+<div class="main top-main">
+  <div class="top-message">
+    <h2>MusicApp</h2>
+    <p>今すぐ参加して、音楽の世界を体験しよう！</p>
+    <br>
+  </div>
+  <div class="carousel">
+    <div class="contains">
+      <input class="slide_select" type="radio" id="SlideA" name="slide_check" checked />
+      <input class="slide_select" type="radio" id="SlideB" name="slide_check" />
+      <input class="slide_select" type="radio" id="SlideC" name="slide_check" />
+      <input class="slide_select" type="radio" id="SlideD" name="slide_check" />
+
+      <div class="slide">
+        <div class="scroll_controler">
+          <label class="scroll_button scroll_prev" for="SlideD"></label>
+          <label class="scroll_button scroll_next" for="SlideB"></label>
+        </div>
+        <img src="/band_kanto.png">
+      </div>
+      <div class="slide">
+        <div class="scroll_controler">
+          <label class="scroll_button scroll_prev" for="SlideA"></label>
+          <label class="scroll_button scroll_next" for="SlideC"></label>
+        </div>
+        <img src="/band_chubu.png">
+      </div>
+      <div class="slide">
+        <div class="scroll_controler">
+          <label class="scroll_button scroll_prev" for="SlideB"></label>
+          <label class="scroll_button scroll_next" for="SlideD"></label>
+        </div>
+        <img src="/band_kansai.png">
+      </div>
+      <div class="slide">
+        <div class="scroll_controler">
+          <label class="scroll_button scroll_prev" for="SlideC"></label>
+          <label class="scroll_button scroll_next" for="SlideA"></label>
+        </div>
+        <img src="/band_kyushu.png">
+      </div>
+
+      <div class="move_controler">
+        <label class="button_move" for="SlideA"></label>
+        <label class="button_move" for="SlideB"></label>
+        <label class="button_move" for="SlideC"></label>
+        <label class="button_move" for="SlideD"></label>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <h2>最新の投稿</h2>
+
+  <div class="card-container">
+    <% if @posts.present? %>
+      <% @posts.each do |post| %>
+        <div class="l-wrapper_02 card-radius_02">
+          <article class="card_02">
+            <div class="card__header_02">
+              <figure class="card__thumbnail_02">
+                <img src="<%= "/post_images/#{post.image_url}" %>" alt="サムネイル" class="card__image_02">
+              </figure>
+              <div class="card__title_02">
+                 <%= post.artist_title %>
+              </div>
+            </div>
+            <div class="card__body_02">
+              <p style="font-size: 18px;"><%= post.content %></p>
+            </div>
+          </article>
+          <div class="user_name">
+            Created by: <%= post.user.name %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>投稿はありません。</p>
+    <% end %>
+  </div>
+</div>

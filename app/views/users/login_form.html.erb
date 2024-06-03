@@ -1,0 +1,22 @@
+<div class="main users-new">
+  <div class="container">
+    <div class="form-heading">ログイン</div>
+    <div class="form users-form">
+      <div class="form-body">
+        <% if @error_message %>
+          <div class="form-error">
+            <%= @error_message %>
+          </div>
+        <% end %>
+        <%= form_tag("/login") do %>
+            <p>ユーザーネーム</p>
+            <input name="user_name" value="<%= @user_name %>">
+            <p>パスワード</p>
+            <input type ="password" name="password"
+                    value="<%= @password %>"> <%#type属性をpasswordとすると右の図のように、入力したパスワードが伏字となる%>
+            <input type="submit" value="ログイン">
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
